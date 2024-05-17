@@ -1,14 +1,24 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ConfigService } from '@nestjs/config';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
+  const config = new DocumentBuilder()
+    .setTitle('Be Apps Logistic')
+    .setDescription('REST API Documentation Apps Logistic')
+    .setVersion('1.0')
+    .addTag('Auth Service')
+    .build();
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('api', app, document);
+
   // Get Config
-  const config: ConfigService = app.get(ConfigService);
+  const config_service: ConfigService = app.get(ConfigService);
 
   // Set Up Port Service
-  await app.listen(config.get('app.port') || 4000);
+  await app.listen(config_service.get('app.port') || 4000);
 }
 bootstrap();
