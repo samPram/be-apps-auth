@@ -8,6 +8,7 @@ import configuration from './configuration';
     ConfigModule.forRoot({
       validationSchema: Joi.object({
         PORT: Joi.number().required(),
+        JWT_SECRET: Joi.string().required(),
       }),
       load: [configuration],
       cache: true,
